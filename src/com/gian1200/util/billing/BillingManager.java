@@ -13,6 +13,9 @@ public class BillingManager {
 	boolean mDebugLog = false;
 	final String mDebugTag = "BillingManager";
 	IabHelper mHelper;
+	String[] consumiblesSKUs = new String[] {},
+			noConsumiblesSKUs = new String[] {};
+
 	// (arbitrary) request code for the purchase flow
 	final int RC_REQUEST;
 
@@ -35,8 +38,13 @@ public class BillingManager {
 				final List<String> allOwnedSkus = inventory.getAllOwnedSkus();
 				for (String sku : allOwnedSkus) {
 					logDebug("There is a consumable product");
-					mHelper.consumeAsync(inventory.getPurchase(sku),
-							mConsumeFinishedListener);
+					for (String conSKU : consumiblesSKUs) {
+						if (conSKU.equals(sku)) {
+							mHelper.consumeAsync(inventory.getPurchase(sku),
+									mConsumeFinishedListener);
+						}
+					}
+
 				}
 			}
 		}
@@ -48,9 +56,12 @@ public class BillingManager {
 			logDebug("Purchase finished: " + result + ", purchase: " + purchase);
 			if (result.isSuccess()) {
 				// final String sku = purchase.getSku();
-				// TODO validar con un IF
 				// if item is consumable, consume
-				mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+				for (String conSKU : consumiblesSKUs) {
+					if (conSKU.equals(purchase.mSku)) {
+						mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+					}
+				}
 			} else {
 			}
 		}
@@ -83,7 +94,7 @@ public class BillingManager {
 					mHelper.queryInventoryAsync(mGotInventoryListener);
 				} else {
 					// Oh noes, there was a problem.
-					Log.e(mDebugTag, result.toString());
+					logError(result.toString());
 				}
 			}
 		});
@@ -97,6 +108,12 @@ public class BillingManager {
 	void logDebug(final String msg) {
 		if (mDebugLog) {
 			Log.d(mDebugTag, msg);
+		}
+	}
+
+	void logError(String msg) {
+		if (mDebugLog) {
+			Log.e(mDebugTag, msg);
 		}
 	}
 
