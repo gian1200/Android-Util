@@ -2,6 +2,7 @@ package com.gian1200.util.billing;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -12,14 +13,14 @@ import com.gian1200.util.billing.IabHelper.QueryInventoryFinishedListener;
 public class BillingManager {
 	boolean mDebugLog = false;
 	final String mDebugTag = "BillingManager";
-	IabHelper mHelper;
-	String[] consumiblesSKUs = new String[] {},
+	public IabHelper mHelper;
+	public String[] consumiblesSKUs = new String[] {},
 			noConsumiblesSKUs = new String[] {};
 
 	// (arbitrary) request code for the purchase flow
 	final int RC_REQUEST;
 
-	QueryInventoryFinishedListener mGotInventoryListener = new QueryInventoryFinishedListener() {
+	public QueryInventoryFinishedListener mGotInventoryListener = new QueryInventoryFinishedListener() {
 		public void onQueryInventoryFinished(IabResult result,
 				Inventory inventory) {
 			logDebug("Query inventory finished");
@@ -51,7 +52,7 @@ public class BillingManager {
 	};
 
 	// Callback for when a purchase is finished
-	OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+	public OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
 		public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
 			logDebug("Purchase finished: " + result + ", purchase: " + purchase);
 			if (result.isSuccess()) {
@@ -68,7 +69,7 @@ public class BillingManager {
 	};
 
 	// Called when consumption is complete
-	OnConsumeFinishedListener mConsumeFinishedListener = new OnConsumeFinishedListener() {
+	public OnConsumeFinishedListener mConsumeFinishedListener = new OnConsumeFinishedListener() {
 		public void onConsumeFinished(Purchase purchase, IabResult result) {
 			logDebug("Consumption finished. Purchase: " + purchase
 					+ ", result: " + result);
@@ -100,7 +101,7 @@ public class BillingManager {
 		});
 	}
 
-	void setDebugLogging(boolean isdebugable) {
+	public void setDebugLogging(boolean isdebugable) {
 		mDebugLog = isdebugable;
 		mHelper.enableDebugLogging(mDebugLog);
 	}
@@ -117,10 +118,15 @@ public class BillingManager {
 		}
 	}
 
-	void destroyIabHelper() {
+	public void destroyIabHelper() {
 		if (mHelper != null) {
 			mHelper.dispose();
 			mHelper = null;
 		}
+	}
+
+	public void launchPurchaseFlow(Activity activity, String sku) {
+		mHelper.launchPurchaseFlow(activity, sku, RC_REQUEST,
+				mPurchaseFinishedListener);
 	}
 }
