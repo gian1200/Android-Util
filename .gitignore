@@ -20,17 +20,21 @@ local.properties
 .project
 
 # Android Studio
+## IntelliJ IDEA
 .idea/
 *.iml
-*.iws
 *.ipr
+*.iws
+## Gradle
+.gradle/
+build/
+out/
 
 # OS generated files
 .DS_Store
-.DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
-Icon?
+Icon
 ehthumbs.db
 Thumbs.db
