@@ -19,6 +19,12 @@ local.properties
 .classpath
 .project
 
+# Android Studio
+.idea/
+*.iml
+*.iws
+*.ipr
+
 # OS generated files
 .DS_Store
 .DS_Store?
