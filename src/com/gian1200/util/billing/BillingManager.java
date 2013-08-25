@@ -16,8 +16,8 @@ public class BillingManager {
 	boolean mDebugLog = false;
 	final String mDebugTag = "BillingManager";
 	public IabHelper mHelper;
-	public String[] consumiblesSKUs = new String[] {},
-			noConsumiblesSKUs = new String[] {};
+	public String[] consumablesSKUs = new String[] {},
+			nonConsumablesSKUs = new String[] {};
 
 	// (arbitrary) request code for the purchase flow
 	final int RC_REQUEST;
@@ -107,7 +107,7 @@ public class BillingManager {
 			final List<String> allOwnedSkus = inventory.getAllOwnedSkus();
 			for (String sku : allOwnedSkus) {
 				logDebug("There is a consumable product");
-				for (String conSKU : consumiblesSKUs) {
+				for (String conSKU : consumablesSKUs) {
 					if (conSKU.equals(sku)) {
 						mHelper.consumeAsync(inventory.getPurchase(sku),
 								mConsumeFinishedListener);
@@ -127,7 +127,7 @@ public class BillingManager {
 
 			// final String sku = purchase.getSku();
 			// if item is consumable, consume
-			for (String conSKU : consumiblesSKUs) {
+			for (String conSKU : consumablesSKUs) {
 				if (conSKU.equals(purchase.mSku)) {
 					mHelper.consumeAsync(purchase, mConsumeFinishedListener);
 				}
