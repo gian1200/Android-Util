@@ -6,11 +6,15 @@
 
 ## Includes
 
- * Android Billing v3 Library
- * Achievement Manager (incomplete)
+ * Android Billing v3 Library (http://developer.android.com/google/play/billing/api.html)
+ * Youtube Api 1.0.0 (https://developers.google.com/youtube/android/player/)
 
-## How to use
+## Prerequisites
 
- * Create a new Android Project From Exsisting Source in Eclipse 
+ * Android SDK updated
+
+## How to setup
+
+ * Create a new Android Project From Existing Code in Eclipse 
  * Link with favorite Project by adding this one as a library
  * Enjoy!
