@@ -104,17 +104,25 @@ public class ExampleApplication extends ApplicationUtil {
  Override this method in the last activity that will be closed in your application (it is most likely to be your main activity or root activity).
  
 ```java
-	@Override
-	protected void onDestroy() {
-		((ExampleApplication) getApplication()).billingManager.destroyIabHelper();
-		super.onDestroy();
-	}
+@Override
+protected void onDestroy() {
+	((ExampleApplication) getApplication()).billingManager.destroyIabHelper();
+	super.onDestroy();
+}
 ```
  
- Finally, in order to trigger a purchase, you only need to use 1 single line of code
+ Finally, in order to trigger a purchase, you only need to use 1 single line of code and override the `onActivityResult` method on the activities where the user will buy any product.
 
 ```java
-	((ExampleApplication) getApplication()).billingManager.launchPurchaseFlow(this, "SKU of the product");
+((ExampleApplication) getApplication()).billingManager.launchPurchaseFlow(this, "SKU of the product");
+```
+
+```java
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	super.onActivityResult(requestCode, resultCode, data);
+	((ExampleApplication) getApplication()).billingManager.onActivityResult(requestCode, resultCode, data);
+}
 ```
 
 ##Final message
