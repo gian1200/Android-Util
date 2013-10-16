@@ -23,6 +23,7 @@ public class BillingManager {
 	final int RC_REQUEST;
 
 	public QueryInventoryFinishedListener mGotInventoryListener = new QueryInventoryFinishedListener() {
+		@Override
 		public void onQueryInventoryFinished(IabResult result,
 				Inventory inventory) {
 			BillingManager.this.onQueryInventoryFinished(result, inventory);
@@ -31,6 +32,7 @@ public class BillingManager {
 
 	// Callback for when a purchase is finished
 	public OnIabPurchaseFinishedListener mPurchaseFinishedListener = new OnIabPurchaseFinishedListener() {
+		@Override
 		public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
 			BillingManager.this.onPurchaseFinished(result, purchase);
 		}
@@ -38,6 +40,7 @@ public class BillingManager {
 
 	// Called when consumption is complete
 	public OnConsumeFinishedListener mConsumeFinishedListener = new OnConsumeFinishedListener() {
+		@Override
 		public void onConsumeFinished(Purchase purchase, IabResult result) {
 			BillingManager.this.onConsumeFinished(purchase, result);
 		}
@@ -55,6 +58,7 @@ public class BillingManager {
 
 	public void startSetup() {
 		mHelper.startSetup(new OnIabSetupFinishedListener() {
+			@Override
 			public void onIabSetupFinished(IabResult result) {
 				if (result.isSuccess()) {
 					mHelper.queryInventoryAsync(mGotInventoryListener);
