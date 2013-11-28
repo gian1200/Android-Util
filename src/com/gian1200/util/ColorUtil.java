@@ -21,4 +21,12 @@ public class ColorUtil {
 				* percentage);
 		return temp;
 	}
+
+	public static int setAlpha0to1(int color, float alpha) {
+		return color & 0x00FFFFFF | Math.round(0xFF * alpha) << 24;
+	}
+
+	public static int setNewAlpha0to255(int color, float alpha) {
+		return setAlpha0to1(color, alpha / 255);
+	}
 }
