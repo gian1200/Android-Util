@@ -6,4 +6,4 @@
 *.jpg                  binary
 
 # Explicitly declare text files we want to always be normalized and converted to native line endings on checkout.
-project.properties    text
+project.properties    eol=lf
