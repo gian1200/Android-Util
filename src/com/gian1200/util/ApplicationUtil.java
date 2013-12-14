@@ -2,7 +2,7 @@ package com.gian1200.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Application;
 import android.content.SharedPreferences;
@@ -11,6 +11,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Base64;
@@ -24,25 +25,54 @@ public abstract class ApplicationUtil extends Application {
 		loadData();
 	}
 
-	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-	public void saveData() {
-		Editor editor = PreferenceManager.getDefaultSharedPreferences(this)
-				.edit();
-		saveData(editor);
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
-			editor.commit();
-		} else {
-			editor.apply();
-		}
-	}
-
 	public void loadData() {
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		loadData(sharedPreferences);
 	}
 
+	@SuppressLint("CommitPrefEdits")
+	public void saveData() {
+		final Editor editor = PreferenceManager.getDefaultSharedPreferences(
+				this).edit();
+		saveData(editor);
+		applyChanges(editor);
+	}
+
+	@SuppressLint("CommitPrefEdits")
+	public void removeData() {
+		final Editor editor = PreferenceManager.getDefaultSharedPreferences(
+				this).edit();
+		removeData(editor);
+		applyChanges(editor);
+	}
+
+	@SuppressLint("CommitPrefEdits")
+	public void deleteAllData() {
+		final Editor editor = PreferenceManager.getDefaultSharedPreferences(
+				this).edit();
+		editor.clear();
+		applyChanges(editor);
+	}
+
+	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+	private void applyChanges(final Editor editor) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
+			new AsyncTask<Void, Void, Void>() {
+				@Override
+				protected Void doInBackground(Void... params) {
+					editor.commit();
+					return null;
+				}
+			}.execute();
+		} else {
+			editor.apply();
+		}
+	}
+
 	public void printHash() {
+		Log.w("hash key",
+				"Do not call this method in your release version: ApplicationUtil.printHash()");
 		PackageInfo info;
 		try {
 			info = getPackageManager().getPackageInfo(getPackageName(),
@@ -54,16 +84,35 @@ public abstract class ApplicationUtil extends Application {
 				String something = new String(Base64.encode(md.digest(), 0));
 				// String something = new
 				// String(Base64.encodeBytes(md.digest()));
-				Log.v("hash key", something);
+				Log.w("hash key", something);
 			}
 		} catch (NameNotFoundException e) {
-			Log.e("name not found", e.toString());
+			Log.e("NameNotFoundException", e.getMessage(), e);
 		} catch (NoSuchAlgorithmException e) {
-			Log.e("no such an algorithm", e.toString());
+			Log.e("NoSuchAlgorithmException", e.getMessage(), e);
 		} catch (Exception e) {
-			Log.e("exception", e.toString());
+			Log.e("Exception", e.getMessage(), e);
 		}
 	}
+
+	public String getApplicationVersionName() {
+		try {
+			return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e) {
+			Log.e("NameNotFoundException", e.getMessage(), e);
+		}
+		return null;
+	}
+
+	public String getMarketAndroidLink() {
+		return getString(R.string.market_android_link, getPackageName());
+	}
+
+	public String getMarketWebLink() {
+		return getString(R.string.market_web_link, getPackageName());
+	}
+
+	protected abstract void removeData(Editor editor);
 
 	protected abstract void loadData(SharedPreferences sharedPreferences);
 

@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <string name="market_android_link" translatable="false">market://details?id=%1$s</string>
+    <string name="market_web_link" translatable="false">http://play.google.com/store/apps/details?id=%1$s</string>
+
 </resources>
