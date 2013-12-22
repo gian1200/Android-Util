@@ -39,6 +39,14 @@ public abstract class ApplicationUtil extends Application {
 		applyChanges(editor);
 	}
 
+	/**
+	 * Removes the desired values defined by {@link #removeData(Editor)
+	 * removeData(Editor)}. The default SharedPreference is used.
+	 * 
+	 * @param editor
+	 *            Interface which contains the values to be removed
+	 */
+
 	@SuppressLint("CommitPrefEdits")
 	public void removeData() {
 		final Editor editor = PreferenceManager.getDefaultSharedPreferences(
@@ -70,6 +78,13 @@ public abstract class ApplicationUtil extends Application {
 		}
 	}
 
+	/**
+	 * Prints in the LogCat the Hash of the used key (Debug or Release). Useful
+	 * if your app uses Facebook SDK (put the hash in your Developer Console) or
+	 * any other services which requires the Hash
+	 * 
+	 */
+
 	public void printHash() {
 		Log.w("hash key",
 				"Do not call this method in your release version: ApplicationUtil.printHash()");
@@ -81,7 +96,8 @@ public abstract class ApplicationUtil extends Application {
 				MessageDigest md;
 				md = MessageDigest.getInstance("SHA");
 				md.update(signature.toByteArray());
-				String something = new String(Base64.encode(md.digest(), 0));
+				String something = new String(Base64.encode(md.digest(),
+						Base64.DEFAULT));
 				// String something = new
 				// String(Base64.encodeBytes(md.digest()));
 				Log.w("hash key", something);
@@ -112,9 +128,34 @@ public abstract class ApplicationUtil extends Application {
 		return getString(R.string.market_web_link, getPackageName());
 	}
 
+	/**
+	 * Override this method to use {@link #removeData() removeData()} and remove
+	 * the desired values using the appropriate keys. The default
+	 * SharedPreference is used.
+	 * 
+	 * @param editor
+	 *            Interface which contains the values to be removed
+	 */
+
 	protected abstract void removeData(Editor editor);
 
+	/**
+	 * Override this method to load all the desired values using the appropriate
+	 * keys. The default SharedPreference is used.
+	 * 
+	 * @param sharedPreferences
+	 *            Interface to access the data to be loaded
+	 */
+
 	protected abstract void loadData(SharedPreferences sharedPreferences);
+
+	/**
+	 * Override this method to save all the desired values using the appropriate
+	 * keys. The default SharedPreference is used.
+	 * 
+	 * @param editor
+	 *            Interface to save desired values
+	 */
 
 	protected abstract void saveData(Editor editor);
 }
