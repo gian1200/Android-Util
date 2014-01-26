@@ -121,11 +121,11 @@ public abstract class ApplicationUtil extends Application {
 	}
 
 	public String getMarketAndroidLink() {
-		return getString(R.string.market_android_link, getPackageName());
+		return StringUtil.getMarketAndroidLink(this);
 	}
 
 	public String getMarketWebLink() {
-		return getString(R.string.market_web_link, getPackageName());
+		return StringUtil.getMarketWebLink(this);
 	}
 
 	/**
