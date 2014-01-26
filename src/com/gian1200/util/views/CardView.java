@@ -166,50 +166,36 @@ public class CardView extends LinearLayout {
 					&& collapseContentAnimator.isRunning()) {
 				collapseContentAnimator.cancel();
 			}
-			contentLayout.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
-			contentLayout.requestLayout();
-
-			// TODO needs to be fixed
-			// http://stackoverflow.com/questions/21354806/cant-correctly-measure-framelayouts-height
-			// Log.i("expand", "" + contentLayout.getHeight() + ", measure: "
-			// + contentLayout.getMeasuredHeight());
-			//
-			// Log.i("aaaaaaaa", "" + contentTextView.getHeight() +
-			// ", measure: "
-			// + contentTextView.getMeasuredHeight());
-			// contentLayout.measure(FrameLayout.LayoutParams.MATCH_PARENT,
-			// FrameLayout.LayoutParams.MATCH_PARENT);
-			//
-			// Log.i("expand", "" + contentLayout.getHeight() + ", measure: "
-			// + contentLayout.getMeasuredHeight());
-			// Log.i("expaasdasdasdnd", "" + contentTextView.getHeight()
-			// + ", measure: " + contentTextView.getMeasuredHeight());
-			// if (expandContentAnimator == null) {
-			// expandContentAnimator = ValueAnimator.ofInt(
-			// contentLayout.getHeight(),
-			// contentLayout.getMeasuredHeight());
-			// } else {
-			// if (expandContentAnimator.isRunning()) {
-			// return;
-			// } else {
-			// expandContentAnimator.setIntValues(
-			// contentLayout.getHeight(),
-			// contentLayout.getMeasuredHeight());
-			// expandContentAnimator.removeAllUpdateListeners();
-			// }
-			// }
-			// expandContentAnimator
-			// .addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-			// @Override
-			// public void onAnimationUpdate(
-			// ValueAnimator valueAnimator) {
-			// int value = (Integer) valueAnimator
-			// .getAnimatedValue();
-			// contentLayout.getLayoutParams().height = value;
-			// contentLayout.requestLayout();
-			// }
-			// });
-			// expandContentAnimator.start();
+			contentLayout.measure(MeasureSpec.makeMeasureSpec(
+					getMeasuredWidth(), MeasureSpec.AT_MOST), MeasureSpec
+					.makeMeasureSpec(LayoutParams.WRAP_CONTENT,
+							MeasureSpec.UNSPECIFIED));
+			if (expandContentAnimator == null) {
+				expandContentAnimator = ValueAnimator.ofInt(
+						contentLayout.getHeight(),
+						contentLayout.getMeasuredHeight());
+			} else {
+				if (expandContentAnimator.isRunning()) {
+					return;
+				} else {
+					expandContentAnimator.setIntValues(
+							contentLayout.getHeight(),
+							contentLayout.getMeasuredHeight());
+					expandContentAnimator.removeAllUpdateListeners();
+				}
+			}
+			expandContentAnimator
+					.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+						@Override
+						public void onAnimationUpdate(
+								ValueAnimator valueAnimator) {
+							int value = (Integer) valueAnimator
+									.getAnimatedValue();
+							contentLayout.getLayoutParams().height = value;
+							contentLayout.requestLayout();
+						}
+					});
+			expandContentAnimator.start();
 		}
 	}
 
