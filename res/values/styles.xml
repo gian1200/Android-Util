@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Card">
+        <item name="titleText">Title</item>
+        <item name="titleColor">@android:color/black</item>
+        <item name="subtitleText">Subtitle</item>
+        <item name="subtitleColor">@android:color/black</item>
+        <item name="subtitleVisible">false</item>
+        <item name="contentColapsed">true</item>
+        <item name="contentType">text</item>
+    </style>
+
+</resources>

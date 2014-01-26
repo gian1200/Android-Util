@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CardView">
+        <attr name="titleText" format="string" />
+        <attr name="titleColor" format="reference" />
+        <attr name="subtitleText" format="string" />
+        <attr name="subtitleColor" format="reference" />
+        <attr name="subtitleVisible" format="boolean" />
+        <attr name="contentId" format="reference" />
+        <attr name="contentColapsed" format="boolean" />
+        <attr name="contentText" format="string" />
+        <attr name="contentType">
+            <flag name="custom" value="0x01" />
+            <flag name="text" value="0x02" />
+        </attr>
+    </declare-styleable>
+
+</resources>
